@@ -113,6 +113,42 @@ async def unpin(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except:
         pass
 
+async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+
+    # Sudo check
+    if user_id not in SUDO_USERS:
+        return
+
+    # DM only
+    if update.effective_chat.type != "private":
+        return
+
+    # Message check
+    if not context.args:
+        await update.message.reply_text(
+            "Usage:\n/announce Your announcement here"
+        )
+        return
+
+    announcement = " ".join(context.args)
+
+    msg = await context.bot.send_message(
+        chat_id=GROUP_ID,
+        text=(
+            "📢 ANNOUNCEMENT\n\n"
+            f"{announcement}\n\n"
+            "- ABESIT Assistant"
+        )
+    )
+
+    await msg.pin(disable_notification=True)
+
+    await update.message.reply_text(
+        "Announcement posted and pinned."
+    )
+
+
 
 if __name__ == "__main__":
     main()
