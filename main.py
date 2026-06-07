@@ -9,10 +9,16 @@ TOKEN = os.getenv("BOT_TOKEN")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_html(
-    f'👋 Hey <a href="tg://user?id={user.id}">{user.first_name}</a>!'
+    mention = update.effective_user.mention_html(
+    update.effective_user.first_name
 )
 
+text = (
+    f"✦ ʜєʟʟᴏ **{mention}** ηɪᴄє ᴛᴏ ϻєєᴛ ʏσᴜ 🥀\n\n"
+    f"⊚ ᴛʜɪꜱ ɪꜱ **{context.bot.first_name}**"
+)
+
+await update.message.reply_html(text)
 def main():
     app = Application.builder().token(TOKEN).build()
 
