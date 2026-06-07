@@ -9,13 +9,9 @@ TOKEN = os.getenv("BOT_TOKEN")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "👋 Hello!\n\n"
-        "I'm the Leaderboard Bot.\n"
-        "Currently available commands:\n"
-        "/start"
-    )
-
+    await update.message.reply_html(
+    f'👋 Hey <a href="tg://user?id={user.id}">{user.first_name}</a>!'
+)
 
 def main():
     app = Application.builder().token(TOKEN).build()
