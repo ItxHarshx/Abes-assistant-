@@ -17,6 +17,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
     f"✦ Hey <b>{mention}</b> !\n\n"
     f'◎ This is <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>, Your Abesit assistant.'
+    )
 
     await update.message.reply_html(text)
     
