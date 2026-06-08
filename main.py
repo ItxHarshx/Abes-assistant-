@@ -4,13 +4,12 @@ from telegram.ext import MessageHandler, filters
 import asyncio
 from telegram.ext import Application, CommandHandler, ContextTypes
 import os
-import json
 from info import SUDO_USERS, GROUP_ID
 
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
-
+GROUP_LOCKED = False
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mention = update.effective_user.mention_html(
@@ -171,21 +170,6 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Announcement posted and pinned."
     )
 
-
-LOCK_FILE = "lock_state.json"
-
-
-def get_lock_state():
-    try:
-        with open(LOCK_FILE, "r") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return {"group_locked": False}
-
-
-def set_lock_state(locked: bool):
-    with open(LOCK_FILE, "w") as f:
-        json.dump({"group_locked": locked}, f)
 
 async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
