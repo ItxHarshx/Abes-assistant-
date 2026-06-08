@@ -172,6 +172,8 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global GROUP_LOCKED
+
     user_id = update.effective_user.id
 
     if user_id not in SUDO_USERS:
@@ -186,13 +188,13 @@ async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    set_lock_state(True)
+    GROUP_LOCKED = True
 
     await update.message.reply_text(
         "🔒 Group Lock Enabled\n\n"
         "Only group admins can send messages until the group is unlocked."
     )
-
+    
 async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
 
