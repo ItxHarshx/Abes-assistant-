@@ -173,12 +173,12 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global GROUP_LOCKED
-
+    
     if GROUP_LOCKED:
-    await update.message.reply_text(
+        await update.message.reply_text(
         "🔒 Group is already locked."
     )
-    return
+        return
 
     user_id = update.effective_user.id
 
@@ -203,12 +203,12 @@ async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global GROUP_LOCKED
-
+    
     if not GROUP_LOCKED:
-    await update.message.reply_text(
+        await update.message.reply_text(
         "🔓 Group is already unlocked."
     )
-    return
+        return
 
     user_id = update.effective_user.id
 
