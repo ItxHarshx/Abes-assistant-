@@ -34,6 +34,8 @@ def main():
     app.add_handler(CommandHandler("pin", pin))
     app.add_handler(CommandHandler("unpin", unpin))
     app.add_handler(CommandHandler("announce", announce))
+    app.add_handler(CommandHandler("lockgroup", lockgroup))
+    app.add_handler(CommandHandler("unlockgroup", unlockgroup))
 
     print("Bot is running...")
 
@@ -163,6 +165,64 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+LOCK_FILE = "lock_state.json"
+
+
+def get_lock_state():
+    try:
+        with open(LOCK_FILE, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {"group_locked": False}
+
+
+def set_lock_state(locked: bool):
+    with open(LOCK_FILE, "w") as f:
+        json.dump({"group_locked": locked}, f)
+
+async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+
+    if user_id not in SUDO_USERS:
+        await update.message.reply_text(
+            "Only official admins can use this command."
+        )
+        return
+
+    if update.effective_chat.type == "private":
+        await update.message.reply_text(
+            "This command can only be used in a group."
+        )
+        return
+
+    set_lock_state(True)
+
+    await update.message.reply_text(
+        "🔒 Group Lock Enabled\n\n"
+        "Only group admins can send messages until the group is unlocked."
+    )
+
+async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+
+    if user_id not in SUDO_USERS:
+        await update.message.reply_text(
+            "Only official admins can use this command."
+        )
+        return
+
+    if update.effective_chat.type == "private":
+        await update.message.reply_text(
+            "This command can only be used in a group."
+        )
+        return
+
+    set_lock_state(False)
+
+    await update.message.reply_text(
+        "🔓 Group Lock Disabled\n\n"
+        "Members can send messages again."
+    )
 
 
 
