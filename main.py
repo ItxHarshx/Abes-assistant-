@@ -37,6 +37,13 @@ def main():
     app.add_handler(CommandHandler("lockgroup", lockgroup))
     app.add_handler(CommandHandler("unlockgroup", unlockgroup))
 
+    app.add_handler(
+    MessageHandler(
+        filters.ALL & ~filters.COMMAND,
+        enforce_group_lock
+    )
+    )
+
     print("Bot is running...")
 
     app.run_polling()
@@ -224,8 +231,32 @@ async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Members can send messages again."
     )
 
+async def enforce_group_lock(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Ignore messages without a sender
+    if not update.effective_user:
+        return
 
+    # Ignore private chats
+    if update.effective_chat.type == "private":
+        return
 
+    # Check lock status
+    if not get_lock_state()["group_locked"]:
+        return
+
+    user = update.effective_user
+    chat = update.effective_chat
+
+    member = await chat.get_member(user.id)
+
+    # Allow admins and owners
+    if member.status in ["administrator", "creator"]:
+        return
+
+    try:
+        await update.message.delete()
+    except:
+        pass
 
 
 
