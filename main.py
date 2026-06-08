@@ -38,6 +38,7 @@ def main():
     app.add_handler(CommandHandler("unlockgroup", unlockgroup))
     app.add_handler(CommandHandler("ping", ping))
     app.add_handler(CommandHandler("lockstatus", lockstatus))
+    app.add_handler(CommandHandler("sudoers", sudoers))
 
     app.add_handler(
     MessageHandler(
@@ -292,6 +293,24 @@ async def lockstatus(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "🔓 Group Status: Unlocked\n\n"
             "All members can send messages."
         )
+
+async def sudoers(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = "<b>Official Admins !</b>\n\n"
+
+    for user_id in SUDO_USERS:
+        try:
+            user = await context.bot.get_chat(user_id)
+
+            text += (
+                f'• <a href="tg://user?id={user_id}">'
+                f'{user.first_name}</a>\n'
+            )
+
+        except:
+            text += f"• <code>{user_id}</code>\n"
+
+    await update.message.reply_html(text)
+
 
 
 
