@@ -196,6 +196,8 @@ async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     
 async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global GROUP_LOCKED
+
     user_id = update.effective_user.id
 
     if user_id not in SUDO_USERS:
@@ -210,25 +212,23 @@ async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    set_lock_state(False)
+    GROUP_LOCKED = False
 
     await update.message.reply_text(
         "🔓 Group Lock Disabled\n\n"
         "Members can send messages again."
     )
-
+    
 async def enforce_group_lock(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print("LOCK HANDLER RUNNING")
-    # Ignore messages without a sender
+    global GROUP_LOCKED
+
     if not update.effective_user:
         return
 
-    # Ignore private chats
     if update.effective_chat.type == "private":
         return
 
-    # Check lock status
-    if not get_lock_state()["group_locked"]:
+    if not GROUP_LOCKED:
         return
 
     user = update.effective_user
@@ -236,15 +236,14 @@ async def enforce_group_lock(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
     member = await chat.get_member(user.id)
 
-    # Allow admins and owners
     if member.status in ["administrator", "creator"]:
         return
 
-    try:
-        await update.message.delete()
-    except:
-        pass
-
+    if update.message:
+        try:
+            await update.message.delete()
+        except Exception as e:
+            print(f"DELETE ERROR: {e}")
 
 
 
