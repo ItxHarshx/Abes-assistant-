@@ -499,16 +499,15 @@ async def ban(update: Update, context: ContextTypes.DEFAULT_TYPE):
         pass
         
     try:
-    member = await chat.get_member(target.id)
-
-    if member.status == "kicked":
-        await update.message.reply_html(
-            f"❌ {target.mention_html()} is already banned."
-        )
-        return
-
-except Exception:
-    pass
+        member = await chat.get_member(target.id)
+        
+        if member.status == "kicked":
+            await update.message.reply_html(
+                f"❌ {target.mention_html()} is already banned."
+            )
+            return
+    except Exception:
+        pass
     
     try:
         await context.bot.ban_chat_member(
@@ -579,18 +578,17 @@ async def unban(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "User ID must be numeric."
         )
         return
-
+        
     try:
-    member = await chat.get_member(int(user_id))
-
-    if member.status != "kicked":
-        await update.message.reply_text(
-            "❌ This user is not banned."
-        )
-        return
-
-except Exception:
-    pass
+        member = await chat.get_member(int(user_id))
+        
+        if member.status != "kicked":
+            await update.message.reply_text(
+                "❌ This user is not banned."
+            )
+            return
+    except Exception:
+        pass
 
     try:
         await context.bot.unban_chat_member(
