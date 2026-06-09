@@ -312,109 +312,130 @@ async def sudoers(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_html(text)
 
-# ---------- admin check ----------
-async def is_admin(chat, user_id):
-    member = await chat.get_member(user_id)
-    return member.status in ["administrator", "creator"] and member.can_restrict_members
 
 
-# ---------- resolve target safely ----------
-async def resolve_target(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message = update.message
-
-    # 1. Reply (BEST METHOD)
-    if message.reply_to_message:
-        return message.reply_to_message.from_user
-
-    # 2. ID or username
-    if context.args:
-        arg = context.args[0]
-
-        # ID case
-        if arg.isdigit():
-            try:
-                member = await update.effective_chat.get_member(int(arg))
-                return member.user
-            except:
-                return None
-
-        # username case (@user)
-        if arg.startswith("@"):
-            arg = arg[1:]
-
-        try:
-            # IMPORTANT: this only works in some cases
-            chat = await context.bot.get_chat(arg)
-            if chat.type == "private":
-                return chat
-        except:
-            return None
-
-    return None
-
-
-# ---------- kick command ----------
 async def kick(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat = update.effective_chat
-    user = update.effective_user
+    admin = update.effective_user
 
-    if chat.type not in ["group", "supergroup"]:
-        await update.message.reply_text("❌ Only works in groups.")
+    # Group only
+    if chat.type not in ("group", "supergroup"):
+        await update.message.reply_text("❌ This command can only be used in groups.")
         return
 
-    if not await is_admin(chat, user.id):
-        await update.message.reply_text("❌ You don't have permission.")
-        return
+    # Admin check
+    admin_member = await chat.get_member(admin.id)
 
-    target = await resolve_target(update, context)
-
-    if not target:
+    if (
+        admin_member.status != "creator"
+        and not getattr(admin_member, "can_restrict_members", False)
+    ):
         await update.message.reply_text(
-            "⚠️ Usage:\n"
-            "/kick (reply)\n"
-            "/kick user_id\n"
-            "/kick @username"
+            "❌ You are missing the required rights (Ban Users)."
         )
         return
 
-    # prevent kicking admins
-    target_member = await chat.get_member(target.id)
-    if target_member.status in ["administrator", "creator"]:
-        await update.message.reply_text("❌ I can't kick admins.")
+    target = None
+    reason = "No reason provided"
+
+    # Reply method
+    if update.message.reply_to_message:
+        target = update.message.reply_to_message.from_user
+
+        if context.args:
+            reason = " ".join(context.args)
+
+    # ID method
+    elif context.args:
+        arg = context.args[0]
+
+        if arg.isdigit():
+            try:
+                member = await chat.get_member(int(arg))
+                target = member.user
+            except Exception:
+                await update.message.reply_text(
+                    "❌ User not found in this group."
+                )
+                return
+
+            if len(context.args) > 1:
+                reason = " ".join(context.args[1:])
+
+        else:
+            await update.message.reply_text(
+                "⚠️ Username-based kicking is not reliable through the Telegram Bot API.\n\n"
+                "Use:\n"
+                "• Reply to a user's message\n"
+                "• /kick <user_id>"
+            )
+            return
+
+    else:
+        await update.message.reply_text(
+            "⚠️ Usage:\n"
+            "• Reply to a user: /kick reason\n"
+            "• /kick <user_id> reason"
+        )
         return
 
-    reason = " ".join(context.args[1:]) if len(context.args) > 1 else "No reason provided"
-    time_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # Prevent kicking admins
+    try:
+        target_member = await chat.get_member(target.id)
+
+        if target_member.status in ("administrator", "creator"):
+            await update.message.reply_text(
+                "❌ I can't kick administrators."
+            )
+            return
+    except Exception:
+        pass
 
     try:
-        # REAL KICK (temporary ban)
-        await chat.ban_member(target.id)
-        await chat.unban_member(target.id)
+        # Kick = temporary ban + unban
+        await context.bot.ban_chat_member(
+            chat_id=chat.id,
+            user_id=target.id
+        )
 
-        admin_name = user.first_name
+        await asyncio.sleep(1.5)
+
+        await context.bot.unban_chat_member(
+            chat_id=chat.id,
+            user_id=target.id,
+            only_if_banned=True
+        )
+
+        admin_name = admin.first_name
+        target_name = target.first_name
 
         await update.message.reply_text(
-            f"👢 {target.first_name} was kicked by {admin_name}\n"
+            f"👢 {target_name} kicked by {admin_name}\n"
             f"📝 Reason: {reason}"
         )
 
         log_text = (
             f"🚨 KICK ACTION\n\n"
-            f"👤 User: {target.first_name} ({target.id})\n"
-            f"👮 Admin: {admin_name} ({user.id})\n"
+            f"👤 User: {target_name} ({target.id})\n"
+            f"👮 Admin: {admin_name} ({admin.id})\n"
             f"🏠 Group: {chat.title}\n"
-            f"🕒 Time: {time_now}\n"
+            f"🕒 Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
             f"📌 Reason: {reason}"
         )
 
         for sudo_id in SUDO_USERS:
             try:
-                await context.bot.send_message(sudo_id, log_text)
-            except:
+                await context.bot.send_message(
+                    chat_id=sudo_id,
+                    text=log_text
+                )
+            except Exception:
                 pass
 
     except Exception as e:
-        await update.message.reply_text(f"❌ Error: {e}")
+        await update.message.reply_text(
+            f"❌ Failed to kick user:\n{e}"
+        )
 
 
 
