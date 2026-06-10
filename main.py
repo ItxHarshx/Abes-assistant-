@@ -727,7 +727,7 @@ async def anti_link_filter(update: Update, context: ContextTypes.DEFAULT_TYPE):
         r"ig\.me/",
     ]
     
-    for pattern in patterns:
+for pattern in patterns:
     if re.search(pattern, text):
         try:
             await update.message.delete()
