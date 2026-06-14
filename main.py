@@ -5,6 +5,7 @@ import asyncio
 from datetime import datetime
 from dotenv import load_dotenv
 from telegram import Update
+from telegram.ext import CallbackQueryHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import MessageHandler, filters, Application, CommandHandler, ContextTypes
 from info import SUDO_USERS, GROUP_ID
@@ -28,7 +29,25 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'📌 Use /help to explore my features.'
         )
 
-        await update.message.reply_html(text)
+        keyboard = [
+    [
+        InlineKeyboardButton(
+            "👨‍💻 Bot Dev",
+            url="https://t.me/YOUR_USERNAME"
+        ),
+        InlineKeyboardButton(
+            "👮 Sudoers",
+            callback_data="sudoers"
+        )
+    ]
+]
+
+reply_markup = InlineKeyboardMarkup(keyboard)
+
+await update.message.reply_html(
+    text,
+    reply_markup=reply_markup
+)
 
     else:
         text = (
@@ -52,7 +71,70 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text,
             reply_markup=reply_markup
         )
-    
+
+async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    if query.data == "sudoers":
+
+        sudo_text = "<b>👮 Official Admins</b>\n\n"
+
+        for user_id in SUDO_USERS:
+            try:
+                user = await context.bot.get_chat(user_id)
+                sudo_text += (
+                    f'• <a href="tg://user?id={user.id}">'
+                    f'{user.first_name}</a>\n'
+                )
+            except:
+                pass
+
+        keyboard = [
+            [
+                InlineKeyboardButton(
+                    "⬅️ Back",
+                    callback_data="back_start"
+                )
+            ]
+        ]
+
+        await query.edit_message_text(
+            sudo_text,
+            parse_mode="HTML",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+
+    elif query.data == "back_start":
+
+        bot = await context.bot.get_me()
+
+        text = (
+            f'I am <a href="tg://user?id={bot.id}">'
+            f'<b>{context.bot.first_name}</b></a>, your ABESIT assistant.\n\n'
+            f'📌 Use /help to explore my features.'
+        )
+
+        keyboard = [
+            [
+                InlineKeyboardButton(
+                    "👨‍💻 Bot Dev",
+                    url="https://t.me/YOUR_USERNAME"
+                ),
+                InlineKeyboardButton(
+                    "👮 Sudoers",
+                    callback_data="sudoers"
+                )
+            ]
+        ]
+
+        await query.edit_message_text(
+            text,
+            parse_mode="HTML",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+
+
 def main():
     app = Application.builder().token(TOKEN).build()
 
