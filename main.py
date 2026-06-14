@@ -28,11 +28,28 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'📌 Use /help to explore my features.'
         )
     else:
-        text = (
-            f'👋 Hey <b>{mention}</b>!\n\n'
-            f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>.\n\n'
-            f'📌 Use /help in my DM to explore my features.'
-        )
+    text = (
+        f'👋 Hey <b>{mention}</b>!\n\n'
+        f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>.\n\n'
+        f'📌 Use /help in my DM to explore my features.'
+    )
+
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                "Start Bot in dm",
+                url=f"https://t.me/{bot.username}?start=start"
+            )
+        ]
+    ]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await update.message.reply_html(
+        text,
+        reply_markup=reply_markup
+    )
+    return
 
     await update.message.reply_html(text)
     
