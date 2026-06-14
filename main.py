@@ -169,6 +169,7 @@ def main():
         enforce_group_lock
     )
     )
+    app.add_handler(CallbackQueryHandler(button_handler))
 
     print("Bot is running...")
 
