@@ -28,32 +28,30 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f'📌 Use /help to explore my features.'
         )
 
+        await update.message.reply_html(text)
+
     else:
         text = (
-        f'👋 Hey <b>{mention}</b>!\n\n'
-        f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>.\n\n'
-        f'📌 Use /help in my DM to explore my features.'
-    )
-        
+            f'👋 Hey <b>{mention}</b>!\n\n'
+            f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>.\n\n'
+            f'📌 Use /help in my DM to explore my features.'
+        )
+
         keyboard = [
-        [
-            InlineKeyboardButton(
-                "🤖 Open Bot",
-                url=f"https://t.me/{bot.username}?start=start"
-            )
+            [
+                InlineKeyboardButton(
+                    "🤖 Open Bot",
+                    url=f"https://t.me/{bot.username}?start=start"
+                )
+            ]
         ]
-    ]
-        
+
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await update.message.reply_html(
-        text,
-        reply_markup=reply_markup
-    )
-    return
-
-
-    await update.message.reply_html(text)
+        await update.message.reply_html(
+            text,
+            reply_markup=reply_markup
+        )
     
 def main():
     app = Application.builder().token(TOKEN).build()
