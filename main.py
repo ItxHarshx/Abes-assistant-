@@ -20,9 +20,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     bot = await context.bot.get_me()
 
-    text = (
-    f'➻ Hey <b>{mention}</b>, This is <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>, Your Abesit assistant.'
-    )
+    if update.effective_chat.type == "private":
+        text = (
+            f'👋 Hey <b>{mention}</b>!\n\n'
+            f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>, your ABESIT assistant.\n\n'
+            f'📌 Use /help to explore my features.'
+        )
+    else:
+        text = (
+            f'👋 Hey <b>{mention}</b>!\n\n'
+            f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>.\n\n'
+            f'📌 Use /help in my DM to explore my features.'
+        )
 
     await update.message.reply_html(text)
     
