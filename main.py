@@ -61,7 +61,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = [
             [
                 InlineKeyboardButton(
-                    "Open Bot",
+                    "Open Bot in Dm",
                     url=f"https://t.me/{bot.username}?start=start"
                 )
             ]
