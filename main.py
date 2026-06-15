@@ -221,6 +221,42 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="HTML",
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
+    
+    elif query.data == "help_general":
+        text = (
+            "<b>👥 General Commands</b>\n\n"
+            "/start - Open bot menu\n"
+            "/ping - Check bot status\n"
+            "/lockstatus - View group lock status"
+        )
+        keyboard = [
+            [
+                InlineKeyboardButton(
+                    "👥 General",
+                    callback_data="help_general"
+                ),
+                InlineKeyboardButton(
+                    "🛡️ Admin",
+                    callback_data="help_admin"
+                ),
+                InlineKeyboardButton(
+                    "✨ Features",
+                    callback_data="help_features"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "❌ Close",
+                    callback_data="help_close"
+                )
+            ]
+        ]
+        
+        await query.edit_message_text(
+            text,
+            parse_mode="HTML",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
 
 
     
