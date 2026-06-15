@@ -38,6 +38,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 InlineKeyboardButton(
                     "👮 Sudoers",
                     callback_data="sudoers"
+                ),
+                InlineKeyboardButton(
+                    "ℹ️ About",
+                    callback_data="about"
                 )
             ]
         ]
