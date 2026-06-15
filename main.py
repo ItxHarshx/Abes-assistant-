@@ -131,6 +131,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         
         keyboard = [
+             [
+                 InlineKeyboardButton(
+                     "Help & Commands",
+                     callback_data="help"
+                 )
+             ],
             [
                 InlineKeyboardButton(
                     "Bot Dev",
@@ -176,6 +182,45 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode="HTML",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
+        
+    elif query.data == "help":
+        text = (
+            "<b>🤖 ABESIT Assistant</b>\n\n"
+            "Current Features:\n\n"
+            "- Announcements\n"
+            "- Group Lock System\n"
+            "- Admin Management\n"
+            "- Bot Monitoring\n\n"
+            "Choose a category below."
+        )
+        keyboard = [
+            [
+                InlineKeyboardButton(
+                    "👥 General",
+                    callback_data="help_general"
+                ),
+                InlineKeyboardButton(
+                    "🛡️ Admin",
+                    callback_data="help_admin"
+                ),
+                InlineKeyboardButton(
+                    "✨ Features",
+                    callback_data="help_features"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "❌ Close",
+                    callback_data="help_close"
+                )
+            ]
+        ]
+        
+        await query.edit_message_text(
+            text,
+            parse_mode="HTML",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
 
 
     
