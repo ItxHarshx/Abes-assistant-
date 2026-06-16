@@ -234,7 +234,8 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "<b>👥 General Commands</b>\n\n"
             "/start - Open bot menu\n"
             "/ping - Check bot status\n"
-            "/lockstatus - View group lock status"
+            "/lockstatus - View group lock status\n"
+            "/contacts - get college contacts"
         )
         keyboard = [
             [
@@ -365,11 +366,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = (
             "<b>📞 Important Contacts: College</b>\n\n"
             "<b>• Contact</b>\n"
-            "+91 97110 60923\n\n"
+            "<code>+91 97110 60923</code>\n\n"
             
             "<b>• Whatsapp/Calling</b>\n"
-            "+91 97110 60929\n" 
-            "+91 82875 16759\n\n"
+            "<code>+91 97110 60929</code>\n" 
+            "<code>+91 82875 16759</code>\n\n"
             
             "<b>• Email & Website</b>\n"
             "- - - -"
@@ -424,11 +425,11 @@ async def contacts(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "<b>📞 Important Contacts: College</b>\n\n"
 
         "• <b>Contact</b>\n"
-        "+91 97110 60923\n\n"
+        "<code>+91 97110 60923</code>\n\n"
 
         "• <b>WhatsApp / Calling</b>\n"
-        "+91 97110 60929\n"
-        "+91 82875 16759\n\n"
+        "<code>+91 97110 60929</code>\n"
+        "<code>+91 82875 16759</code>\n\n"
 
         "• <b>Email & Website</b>\n"
         "- - - -"
