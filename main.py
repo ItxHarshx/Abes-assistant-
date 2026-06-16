@@ -210,6 +210,13 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ],
             [
                 InlineKeyboardButton(
+                    "📞 Contact",
+                    callback_data="help_contact"
+                )
+            ],
+            [
+                    
+                InlineKeyboardButton(
                     "❌ Close",
                     callback_data="help_close"
                 )
@@ -242,6 +249,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 InlineKeyboardButton(
                     "Features",
                     callback_data="help_features"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "📞 Contact",
+                    callback_data="help_contact"
                 )
             ],
             [
@@ -285,6 +298,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ],
             [
                 InlineKeyboardButton(
+                    "📞 Contact",
+                    callback_data="help_contact"
+                )
+            ],
+            [
+                InlineKeyboardButton(
                     "❌ Close",
                     callback_data="help_close"
                 )
@@ -320,6 +339,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 InlineKeyboardButton(
                     "Features",
                     callback_data="help_features"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "📞 Contact",
+                    callback_data="help_contact"
                 )
             ],
             [
