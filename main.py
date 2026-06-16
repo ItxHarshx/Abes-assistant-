@@ -14,6 +14,7 @@ load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 GROUP_LOCKED = False
+LOCKED_BY = None
 ANTILINK_ENABLED = False
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -616,11 +617,16 @@ async def lockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     GROUP_LOCKED = True
-
-    await update.message.reply_text(
-        "🔒 Group Lock Enabled\n\n"
-        "Only group admins can send messages until the group is unlocked."
+    global LOCKED_BY
+    LOCKED_BY = update.effective_user.mention_html(
+        update.effective_user.first_name
     )
+
+    await update.message.reply_html(
+        "🔒 Group Lock Enabled\n\n"
+        "Only group admins can send messages until the group is unlocked.\n\n"
+        f"👤 Locked By: {LOCKED_BY}"
+)
     
 async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global GROUP_LOCKED
@@ -646,6 +652,7 @@ async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     GROUP_LOCKED = False
+    LOCKED_BY = None
 
     await update.message.reply_text(
         "🔓 Group Lock Disabled\n\n"
@@ -653,7 +660,7 @@ async def unlockgroup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     
 async def enforce_group_lock(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    global GROUP_LOCKED
+    global GROUP_LOCKED, LOCKED_BY
 
     if not update.effective_user:
         return
@@ -705,9 +712,10 @@ async def lockstatus(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if GROUP_LOCKED:
-        await update.message.reply_text(
+        await update.message.reply_html(
             "🔒 Group Status: Locked\n\n"
-            "Only group admins can send messages."
+            "Only group admins can send messages.\n\n"
+            f"👤 Locked By: {LOCKED_BY}"
         )
     else:
         await update.message.reply_text(
