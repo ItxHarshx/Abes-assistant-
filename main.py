@@ -403,19 +403,18 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
             ]
         ]
-
-    await query.edit_message_text(
-        text,
-        parse_mode="HTML",
-        reply_markup=InlineKeyboardMarkup(keyboard),
-        disable_web_page_preview=True
-    )
-
-elif query.data == "help_close":
-try:
-    await query.message.delete()
-except:
-    pass
+        
+        await query.edit_message_text(
+            text,
+            parse_mode="HTML",
+            reply_markup=InlineKeyboardMarkup(keyboard),
+            disable_web_page_preview=True
+        )
+    elif query.data == "help_close":
+        try:
+            await query.message.delete()
+        except:
+            pass
 
 
     
