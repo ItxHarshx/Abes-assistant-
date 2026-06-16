@@ -364,11 +364,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == "help_contact":
         text = (
             "<b>📞 Important Contacts</b>\n\n"
-            "🏢 <b>College Office</b>\n"
-            "📞 +91XXXXXXXXXX\n\n"
+            "<b>• Contact</b>\n"
+            "+919711060923\n\n"
             
-            "🎓 <b>Admission Cell</b>\n"
-            "📞 +91XXXXXXXXXX\n\n"
+            "•<b>Whatsapp + Calling</b>\n"
+            "+919711060929\n" 
+            "+918287516759\n\n"
             
             "📧 <b>Email</b>\n"
             "----\n\n"
@@ -396,7 +397,8 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 InlineKeyboardButton(
                     "📞 Contact",
                     callback_data="help_contact"
-                ),
+                )
+            ],
                 InlineKeyboardButton(
                     "❌ Close",
                     callback_data="help_close"
