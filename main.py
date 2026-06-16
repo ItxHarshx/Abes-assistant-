@@ -218,7 +218,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [
                     
                 InlineKeyboardButton(
-                    "❌ Close",
+                    "⌧ Close",
                     callback_data="help_close"
                 )
             ]
@@ -261,7 +261,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ],
             [
                 InlineKeyboardButton(
-                    "❌ Close",
+                    "⌧ Close",
                     callback_data="help_close"
                 )
             ]
@@ -306,7 +306,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ],
             [
                 InlineKeyboardButton(
-                    "❌ Close",
+                    "⌧ Close",
                     callback_data="help_close"
                 )
             ]
@@ -351,7 +351,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ],
             [
                 InlineKeyboardButton(
-                    "❌ Close",
+                    "⌧ Close",
                     callback_data="help_close"
                 )
             ]
@@ -401,7 +401,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ],
             [
                 InlineKeyboardButton(
-                    "❌ Close",
+                    "⌧ Close",
                     callback_data="help_close"
                 )
             ]
