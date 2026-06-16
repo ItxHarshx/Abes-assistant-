@@ -365,14 +365,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text = (
             "<b>📞 Important Contacts: College</b>\n\n"
             "<b>• Contact</b>\n"
-            "+919711060923\n\n"
+            "+91 97110 60923\n\n"
             
             "<b>• Whatsapp/Calling</b>\n"
-            "+919711060929\n" 
-            "+918287516759\n\n"
+            "+91 97110 60929\n" 
+            "+91 82875 16759\n\n"
             
             "<b>• Email & Website</b>\n"
-            "----"
+            "- - - -"
             
         )
         
@@ -431,7 +431,7 @@ async def contacts(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "+91 82875 16759\n\n"
 
         "• <b>Email & Website</b>\n"
-        "Coming Soon"
+        "- - - -"
     )
 
     await update.message.reply_html(text)    
