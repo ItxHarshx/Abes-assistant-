@@ -486,7 +486,7 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = await context.bot.send_message(
         chat_id=GROUP_ID,
     text=(
-        "<b>📢 ANNOUNCEMENT !</b>\n\n"
+        "<b>📢 Announcement!</b>\n\n"
         f"{announcement}\n\n"
         "<b>- ABESIT Assistant.</b>"
     ),
