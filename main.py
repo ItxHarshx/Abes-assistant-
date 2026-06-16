@@ -363,19 +363,17 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     elif query.data == "help_contact":
         text = (
-            "<b>📞 Important Contacts</b>\n\n"
+            "<b>📞 Important Contacts: College</b>\n\n"
             "<b>• Contact</b>\n"
             "+919711060923\n\n"
             
-            "•<b>Whatsapp + Calling</b>\n"
+            "<b>• Whatsapp/Calling</b>\n"
             "+919711060929\n" 
             "+918287516759\n\n"
             
-            "📧 <b>Email</b>\n"
-            "----\n\n"
-            
-            "🌐 <b>Website</b>\n"
+            "<b>• Email & Website</b>\n"
             "----"
+            
         )
         
         keyboard = [
