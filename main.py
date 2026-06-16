@@ -25,7 +25,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_chat.type == "private":
         text = (
             f'👋 Hey <b>{mention}</b>!\n\n'
-            f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>, your ABESIT assistant.\n\n'
+            f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>, a community management bot designed for the group Abesit Batch 2026-27.\n\n'
         )
 
         keyboard = [
@@ -61,7 +61,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         text = (
             f'👋 Hey <b>{mention}</b>!\n\n'
-            f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}</b></a>.\n\n'
+            f'I am <a href="tg://user?id={bot.id}"><b>{context.bot.first_name}, a community management bot designed for the group Abesit Batch 2026-27.</b></a>.\n\n'
         )
 
         keyboard = [
